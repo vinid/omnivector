@@ -26,7 +26,7 @@ OmniVector
 Features
 --------
 
-* TODO
+* The AbstractDB requires setting OMNIVECTOR_CONFIG env variable to a config file (an example is in config.yaml)
 
 Credits
 -------
