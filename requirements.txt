@@ -1,0 +1,5 @@
+pinecone
+pandas
+lancedb
+pgvector
+psycopg
