@@ -1,0 +1,9 @@
+pinecone:
+    PINECONE_API_KEY: ADD_API_KEY_HERE
+    GPC_ENVIRONMENT: ADD_ENV_HERE
+    INDEX_NAME: test
+lancedb:
+    DB_PATH: /tmp/chatbot.lance
+    N_PROBES: 20
+    REFINE_FACTOR: 100
+
