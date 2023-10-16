@@ -2,7 +2,7 @@ import pandas as pd
 import os
 import pinecone
 import time
-import yaml
+
 
 class AbstractDB:
 
@@ -78,8 +78,6 @@ class LanceDB(AbstractDB):
     def __init__(self):
         super().__init__()
 
-
-
     def create_index(self, ids, texts, vectors):
         import lance
         import pyarrow as pa
@@ -103,3 +101,34 @@ class LanceDB(AbstractDB):
                 "nprobes": 20,
                 "refine_factor": 100
             }).to_pandas()
+
+
+
+
+class PGVectorDB(AbstractDB):
+    def __init__(self):
+        from pgvector.psycopg import register_vector
+        import psycopg
+
+        super().__init__()
+
+        self.conn = psycopg.connect("dbname=template1 user=postgres password=your_password", autocommit=True)
+
+        self.conn.execute('CREATE EXTENSION IF NOT EXISTS vector')
+        register_vector(self.conn)
+
+    def create_index(self, ids, texts, vectors):
+        self.conn.execute('DROP TABLE IF EXISTS documents')
+        self.conn.execute('CREATE TABLE documents (id bigserial PRIMARY KEY, content text, embedding vector(384))')
+
+
+        for id, content, embedding in zip(ids, texts, vectors):
+            self.conn.execute('INSERT INTO documents (id, content, embedding) VALUES (%s, %s, %s)', (id, content, embedding))
+
+
+    def vector_search(self, vector, k=3):
+        neighbors = self.conn.execute('SELECT id, content FROM documents ORDER BY embedding <=> %s LIMIT 5', (vector,))
+
+        return [n for n in  neighbors]
+
+
