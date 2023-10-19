@@ -7,7 +7,9 @@ class PGVectorDB(AbstractDB):
 
         super().__init__()
 
-        self.conn = psycopg.connect("dbname=template1 user=postgres password=your_password", autocommit=True)
+        self.conn = psycopg.connect(f'dbname={self.config["pgvector"]["DB_NAME"]} '
+                                    f'user={self.config["pgvector"]["USER"]} '
+                                    f'password={self.config["pgvector"]["PASSWORD"]}', autocommit=True)
 
         self.conn.execute('CREATE EXTENSION IF NOT EXISTS vector')
         register_vector(self.conn)

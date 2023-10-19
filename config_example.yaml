@@ -6,4 +6,12 @@ lancedb:
     DB_PATH: /tmp/chatbot.lance
     N_PROBES: 20
     REFINE_FACTOR: 100
+weaviate:
+    API_KEY: ADD_API_KEY_HERE
+    URL: ADD_URL_HERE
+    CLASS: ADD_CLASS_HERE
+pgvector:
+    DB_NAME: ADD_DB_NAME_HERE
+    USER: ADD_USER_HERE
+    PASSWORD: ADD_PASSWORD_HERE
 

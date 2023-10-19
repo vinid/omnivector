@@ -1,7 +1,8 @@
-from omnivector.abstraction import *
+from omnivector import PineconeDB, WeaviateDB, LanceDB, PGVectorDB
+
 from omnivector.embedders import SentenceTransformerEmbedder
 
-db = PGVectorDB()  # or PineconeDB() or LanceDB()
+db = WeaviateDB()  # or PineconeDB() or LanceDB()
 
 encoder = SentenceTransformerEmbedder("paraphrase-MiniLM-L6-v2", device="cpu")
 docs = ["the cat is on the table", "the table is on the cat", "the dog is mining bitcoins"]
