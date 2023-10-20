@@ -16,8 +16,25 @@ OmniVector
 
 
 
-.
+OmniVector provides a simple interface to vector databases. We integrate the main functionalities of different vector dbs,
+generally indexing and searching, into a single interface. This allows us to easily switch between different vector dbs.
 
+
+:code-block: python
+
+    db = WeaviateDB()  # or PineconeDB() or LanceDB()
+
+    encoder = SentenceTransformerEmbedder("paraphrase-MiniLM-L6-v2", device="cpu")
+    docs = ["the cat is on the table", "the table is on the cat", "the dog is mining bitcoins"]
+
+
+    ids = list(range(4, len(docs) + 4))
+    embeddings = encoder.embed(docs)
+
+    db.create_index(ids, docs, embeddings)
+
+    search_vector = encoder.embed(["the dog is mining bitcoins"])[0]
+    print(db.vector_search(search_vector, k=1))
 
 * Free software: MIT license
 * Documentation: https://omnivector.readthedocs.io.
