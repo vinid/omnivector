@@ -20,7 +20,7 @@ OmniVector provides a simple interface to vector databases. We integrate the mai
 generally indexing and searching, into a single interface. This allows us to easily switch between different vector dbs.
 
 
-:code-block: python
+.. code-block:: python
 
     db = WeaviateDB()  # or PineconeDB() or LanceDB()
 
