@@ -1,7 +1,6 @@
 from omnivector import PineconeDB, WeaviateDB, LanceDB, PGVectorDB
 
 from omnivector.embedders import SentenceTransformerEmbedder
-
 db = WeaviateDB()  # or PineconeDB() or LanceDB()
 
 encoder = SentenceTransformerEmbedder("paraphrase-MiniLM-L6-v2", device="cpu")
