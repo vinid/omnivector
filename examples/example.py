@@ -1,4 +1,4 @@
-from omnivector import PineconeDB, WeaviateDB, LanceDB, PGVectorDB
+from omnivector import PineconeDB, WeaviateDB, LanceDB
 
 from omnivector.embedders import SentenceTransformerEmbedder
 db = LanceDB()
