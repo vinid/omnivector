@@ -10,7 +10,7 @@ class AbstractDB:
         import yaml
         self.config = yaml.safe_load(open(os.environ["OMNIVECTOR_CONFIG"]))
 
-    def create_index(self, ids, text, vectors):
+    def create_index(self, ids, vectors, metadata=None):
         pass
 
     def vector_search(self, vector, k=1):

@@ -8,12 +8,17 @@ class LanceDB(AbstractDB):
     def __init__(self):
         super().__init__()
 
-    def create_index(self, ids, texts, vectors):
+    def create_index(self, ids, vectors, metadata=None):
         import lance
         import pyarrow as pa
         from lance.vector import vec_to_table
 
-        data = pd.DataFrame({"text": texts, "id": ids})
+        meta_df = pd.DataFrame.from_records(metadata)
+
+        data = pd.DataFrame({"id": ids})
+
+        data = pd.concat([data, meta_df], axis=1)
+        print(data)
         table = vec_to_table(vectors)
 
         combined = pa.Table.from_pandas(data).append_column("vector", table["vector"])
