@@ -13,12 +13,12 @@ class LanceDB(AbstractDB):
         import pyarrow as pa
         from lance.vector import vec_to_table
 
-        meta_df = pd.DataFrame.from_records(metadata)
 
         data = pd.DataFrame({"id": ids})
 
-        data = pd.concat([data, meta_df], axis=1)
-        print(data)
+        if metadata is not None:
+            meta_df = pd.DataFrame.from_records(metadata)
+            data = pd.concat([data, meta_df], axis=1)
         table = vec_to_table(vectors)
 
         combined = pa.Table.from_pandas(data).append_column("vector", table["vector"])
