@@ -8,31 +8,36 @@ class LanceDB(AbstractDB):
     def __init__(self):
         super().__init__()
 
-    def create_index(self, ids, vectors, metadata=None):
-        import lance
-        import pyarrow as pa
-        from lance.vector import vec_to_table
+    def create_index(self):
+        # not sure how to do this in Lance
+        pass
 
-
+    def add(self, ids, vectors, metadata=None):
+        import lancedb
         data = pd.DataFrame({"id": ids})
+
+        db = lancedb.connect(self.config["lancedb"]["DB_PATH"])
 
         if metadata is not None:
             meta_df = pd.DataFrame.from_records(metadata)
             data = pd.concat([data, meta_df], axis=1)
-        table = vec_to_table(vectors)
 
-        combined = pa.Table.from_pandas(data).append_column("vector", table["vector"])
-        ds = lance.write_dataset(combined, self.config["lancedb"]["DB_PATH"], mode="overwrite")
+        data["vector"] = vectors.tolist()
+
+
+        try:
+            tbl = db.open_table("my_table")
+            tbl.add(data)
+        except:
+            db.create_table("my_table", data)
 
 
     def vector_search(self, vector, k=3):
-        import lance
-        self.ds = lance.dataset(self.config["lancedb"]["DB_PATH"])
-        return self.ds.to_table(
-            nearest={
-                "column": "vector",
-                "k": k,
-                "q": vector,
-                "nprobes": 20,
-                "refine_factor": 100
-            }).to_pandas()
+        import lancedb
+        db = lancedb.connect(self.config["lancedb"]["DB_PATH"])
+
+        tbl = db.open_table("my_table")
+
+        return tbl.search(vector).limit(k).to_df()
+
+

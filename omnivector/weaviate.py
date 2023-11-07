@@ -15,7 +15,7 @@ class WeaviateDB(AbstractDB):
 
         )
 
-    def create_index(self, ids, vectors, metadata=None):
+    def create_index(self):
         class_obj = {
             "class": self.config["weaviate"]["CLASS"],
             "vectorizer": "none",
@@ -24,12 +24,14 @@ class WeaviateDB(AbstractDB):
 
         self.client.schema.create_class(class_obj)
 
-        self.client.batch.configure(batch_size=100)  # Configure batch
-        with self.client.batch as batch:  # Configure a batch process
-            for id, t, v in zip(ids,metadata,vectors):  # Batch import all Questions
+    def add(self, ids, vectors, metadata=None):
+        self.client.batch.configure(batch_size=100)
+
+        with self.client.batch as batch:
+            for id, t, v in zip(ids, metadata, vectors):
                 properties = {
                     "index": id,
-                    **metadata
+                    **t
                 }
                 batch.add_data_object(
                     data_object=properties,
