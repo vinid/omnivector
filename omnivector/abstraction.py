@@ -1,8 +1,4 @@
-import pandas as pd
 import os
-import pinecone
-import time
-
 
 class AbstractDB:
 
