@@ -31,8 +31,8 @@ generally indexing and searching, into a single interface. This allows us to eas
     ids = list(range(4, len(docs) + 4))
     embeddings = encoder.embed(docs)
 
-    db.create_index(ids, docs, embeddings)
-
+    db.create_index()
+    db.add(ids, docs, embeddings)
     search_vector = encoder.embed(["the dog is mining bitcoins"])[0]
     print(db.vector_search(search_vector, k=1))
 
