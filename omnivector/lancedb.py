@@ -12,6 +12,15 @@ class LanceDB(AbstractDB):
         # not sure how to do this in Lance
         pass
 
+    def delete(self, ids):
+        import lancedb
+        db = lancedb.connect(self.config["lancedb"]["DB_PATH"])
+
+        tbl = db.open_table("my_table")
+        ids = ", ".join(str(v) for v in ids)
+
+        tbl.delete(f"id IN ({ids})")
+
     def add(self, ids, vectors, metadata=None):
         import lancedb
         data = pd.DataFrame({"id": ids})

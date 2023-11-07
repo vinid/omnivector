@@ -39,6 +39,13 @@ class WeaviateDB(AbstractDB):
                     vector=v  # Add custom vector
                 )
 
+    def delete(self, ids):
+        with self.client.batch as batch:
+            for id in ids:
+                batch.delete_objects(class_name=self.config["weaviate"]["CLASS"],
+                                 where={"path": ["index"], "operator": "Equal", "valueNumber": id})
+
+
     def vector_search(self, vector, k=3):
         import json
         response = (
