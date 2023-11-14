@@ -1,7 +1,7 @@
 import time
-from omnivector import PineconeDB, WeaviateDB, LanceDB
+from omnivector import PineconeDB, WeaviateDB, LanceDB, ChromaVDB
 from omnivector.embedders import SentenceTransformerEmbedder
-db = LanceDB()
+db = ChromaVDB()
 sleep = 1
 
 encoder = SentenceTransformerEmbedder("paraphrase-MiniLM-L6-v2", device="cpu")

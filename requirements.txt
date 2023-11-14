@@ -3,3 +3,6 @@ pandas
 lancedb
 pgvector
 psycopg
+chromadb
+parquet
+duckdb
